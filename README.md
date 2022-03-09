@@ -7,7 +7,7 @@ A short assembly macro-processor script to simulate the process and show the dif
 3. In case your desktop is not found a new folder will be created in your user home directory and a output file will be made there
 
 ## Java Version < 11 peeps 🧧
-Run this first in the same directory where the downloaded file is being kept
+**Run this command first in the same directory where the downloaded file is being kept.**
 
 ```terminal
 javac MacroProcessor.java
