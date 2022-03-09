@@ -21,7 +21,7 @@ _Here ```"inputfile.txt"``` is the path and file name of file which contains the
 
 _Also ```"outputfile.txt"``` is the path and file name of your custom output file._
 
-_If the output file specified by you, has not been created by you, the code will handle it._
+_If the output file specified by you, has not been created, the code will handle it._
 
 ```terminal
 java MacroProcessor "inputFile.txt" "outputFile.txt"
@@ -33,7 +33,7 @@ _In case where no output parameter is specified, the code will create one on you
 java MacroProcessor "inputFile.txt"
 ```
 
-_In case where no parameters are provided the code will scan for a file name ```"scan_for_macro.txt"``` on your desktop._
+_In case where no parameters are provided the code will scan for a file named ```"scan_for_macro.txt"``` on your desktop._
 
 ```terminal
 java MacroProcessor
@@ -48,19 +48,19 @@ _Here ```"inputfile.txt"``` is the path and file name of file which contains the
 
 _Also ```"outputfile.txt"``` is the path and file name of your custom output file._
 
-_If the output file specified by you, has not been created by you, the code will handle it._
+_If the output file specified by you, has not been created, the code will handle it._
 
 ```terminal
 java MacroProcessor.java "inputFile.txt" "outputFile.txt"
 ```
 
-_In case where no output parameter is specified, the code will create one on your desktop._
+_In case where no output parameter is specified, the code will create one named ```"macro"``` on your desktop._
 
 ```terminal
 java MacroProcessor.java "inputFile.txt"
 ```
 
-_In case where no parameters are provided the code will scan for a file name ```"scan_for_macro.txt"``` on your desktop._
+_In case where no parameters are provided, the code will scan for a file named ```"scan_for_macro.txt"``` on your desktop._
 
 ```terminal
 java MacroProcessor.java
