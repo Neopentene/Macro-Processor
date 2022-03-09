@@ -9,15 +9,18 @@ A short assembly macro-processor script to simulate the process and show the dif
 ## Java Version < 11 peeps 🧧
 Run this first in the same directory where the downloaded file is being kept
 
-```javac MacroProcessor.java```
+```terminal
+javac MacroProcessor.java```
 
 To run the code make of use these commands
 
-```java MacroProcessor "inputFile.txt" "outputFile.txt"```
+```terminal
+java MacroProcessor "inputFile.txt" "outputFile.txt"```
 
 ## Java Version > 11 peeps ✨
 Run the code directly using this command
 
-```java MacroProcessor.java "inputFile.txt" "outputFile.txt"```
+```terminal
+java MacroProcessor.java "inputFile.txt" "outputFile.txt"```
 
 
