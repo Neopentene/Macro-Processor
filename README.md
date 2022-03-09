@@ -15,12 +15,14 @@ javac MacroProcessor.java```
 To run the code make of use these commands
 
 ```terminal
-java MacroProcessor "inputFile.txt" "outputFile.txt"```
+java MacroProcessor "inputFile.txt" "outputFile.txt"
+```
 
 ## Java Version > 11 peeps ✨
 Run the code directly using this command
 
 ```terminal
-java MacroProcessor.java "inputFile.txt" "outputFile.txt"```
+java MacroProcessor.java "inputFile.txt" "outputFile.txt"
+```
 
 
