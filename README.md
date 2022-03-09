@@ -10,7 +10,8 @@ A short assembly macro-processor script to simulate the process and show the dif
 Run this first in the same directory where the downloaded file is being kept
 
 ```terminal
-javac MacroProcessor.java```
+javac MacroProcessor.java
+```
 
 To run the code make of use these commands
 
