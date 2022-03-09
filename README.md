@@ -13,7 +13,7 @@ Run this first in the same directory where the downloaded file is being kept
 javac MacroProcessor.java
 ```
 
-To run the code make of use these commands
+To run the code make of use this commands. Note in case of missing parameters, default ones will be selected 
 
 ```terminal
 java MacroProcessor "inputFile.txt" "outputFile.txt"
