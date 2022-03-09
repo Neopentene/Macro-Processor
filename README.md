@@ -13,17 +13,57 @@ Run this first in the same directory where the downloaded file is being kept
 javac MacroProcessor.java
 ```
 
-To run the code make of use this commands. Note in case of missing parameters, default ones will be selected 
+To run the code make of use these commands. 
+
+Note in case of missing parameters, default ones will be selected.
+
+Here ```"inputfile.txt"``` is the path and file name of assembly code.
+
+Also ```"outputfile.txt"``` is the path and file name of your custom output file.
+
+If the output file specified by you, has not been created by you, the code will handle it.
 
 ```terminal
 java MacroProcessor "inputFile.txt" "outputFile.txt"
 ```
 
+In case where no output parameter is specified, the code will create one on your desktop.
+
+```terminal
+java MacroProcessor "inputFile.txt"
+```
+
+In case where no parameters are provided the code will scan for a file name ```"scan_for_macro.txt"``` on your desktop.
+
+```terminal
+java MacroProcessor
+```
+
 ## Java Version > 11 peeps ✨
 Run the code directly using this command
 
+Note in case of missing parameters, default ones will be selected.
+
+Here ```"inputfile.txt"``` is the path and file name of assembly code.
+
+Also ```"outputfile.txt"``` is the path and file name of your custom output file.
+
+If the output file specified by you, has not been created by you, the code will handle it.
+
 ```terminal
 java MacroProcessor.java "inputFile.txt" "outputFile.txt"
+```
+
+In case where no output parameter is specified, the code will create one on your desktop.
+
+```terminal
+java MacroProcessor.java "inputFile.txt"
+```
+
+In case where no parameters are provided the code will scan for a file name ```"scan_for_macro.txt"``` on your desktop.
+
+```terminal
+java MacroProcessor.java
 ```
 
 
