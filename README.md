@@ -13,54 +13,54 @@ Run this first in the same directory where the downloaded file is being kept
 javac MacroProcessor.java
 ```
 
-To run the code make of use these commands. 
+**To run the code make of use these commands.**
 
-Note in case of missing parameters, default ones will be selected.
+_Note in case of missing parameters, default ones will be selected._
 
-Here ```"inputfile.txt"``` is the path and file name of assembly code.
+_Here ```"inputfile.txt"``` is the path and file name of file which contains the assembly code._
 
-Also ```"outputfile.txt"``` is the path and file name of your custom output file.
+_Also ```"outputfile.txt"``` is the path and file name of your custom output file._
 
-If the output file specified by you, has not been created by you, the code will handle it.
+_If the output file specified by you, has not been created by you, the code will handle it._
 
 ```terminal
 java MacroProcessor "inputFile.txt" "outputFile.txt"
 ```
 
-In case where no output parameter is specified, the code will create one on your desktop.
+_In case where no output parameter is specified, the code will create one on your desktop._
 
 ```terminal
 java MacroProcessor "inputFile.txt"
 ```
 
-In case where no parameters are provided the code will scan for a file name ```"scan_for_macro.txt"``` on your desktop.
+_In case where no parameters are provided the code will scan for a file name ```"scan_for_macro.txt"``` on your desktop._
 
 ```terminal
 java MacroProcessor
 ```
 
 ## Java Version > 11 peeps ✨
-Run the code directly using this command
+**Run the code directly using these commands**
 
-Note in case of missing parameters, default ones will be selected.
+_Note in case of missing parameters, default ones will be selected._
 
-Here ```"inputfile.txt"``` is the path and file name of assembly code.
+_Here ```"inputfile.txt"``` is the path and file name of file which contains the assembly code._
 
-Also ```"outputfile.txt"``` is the path and file name of your custom output file.
+_Also ```"outputfile.txt"``` is the path and file name of your custom output file._
 
-If the output file specified by you, has not been created by you, the code will handle it.
+_If the output file specified by you, has not been created by you, the code will handle it._
 
 ```terminal
 java MacroProcessor.java "inputFile.txt" "outputFile.txt"
 ```
 
-In case where no output parameter is specified, the code will create one on your desktop.
+_In case where no output parameter is specified, the code will create one on your desktop._
 
 ```terminal
 java MacroProcessor.java "inputFile.txt"
 ```
 
-In case where no parameters are provided the code will scan for a file name ```"scan_for_macro.txt"``` on your desktop.
+_In case where no parameters are provided the code will scan for a file name ```"scan_for_macro.txt"``` on your desktop._
 
 ```terminal
 java MacroProcessor.java
