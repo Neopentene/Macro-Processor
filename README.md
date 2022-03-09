@@ -27,7 +27,7 @@ _If the output file specified by you, has not been created, the code will handle
 java MacroProcessor "inputFile.txt" "outputFile.txt"
 ```
 
-_In case where no output parameter is specified, the code will create one on your desktop._
+_In case where no output parameter is specified, the code will create one named ```"macroProcessor_output.txt"``` on your desktop._
 
 ```terminal
 java MacroProcessor "inputFile.txt"
@@ -54,7 +54,7 @@ _If the output file specified by you, has not been created, the code will handle
 java MacroProcessor.java "inputFile.txt" "outputFile.txt"
 ```
 
-_In case where no output parameter is specified, the code will create one named ```"macro"``` on your desktop._
+_In case where no output parameter is specified, the code will create one named ```"macroProcessor_output.txt"``` on your desktop._
 
 ```terminal
 java MacroProcessor.java "inputFile.txt"
