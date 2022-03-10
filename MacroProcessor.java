@@ -83,6 +83,8 @@ class MacroProcessor {
             passOne.readFile();
             passTwo = new PassTwo(passOne);
             passTwo.readIntermediateFile();
+            passOne = passTwo.getPassOne();
+            passOne.setBoxes();
 
             stamp = new Date().getTime() - stamp;
 
@@ -142,7 +144,8 @@ class PassOne {
 
     private Scanner reader = null;
     private File file = null;
-    private boolean isMacro = false, inMacro = false;
+    private boolean isMacro = false;
+    private int inMacro = 0;
     private Box intermediateCodeBox, MNTBox, MDTBox, ALABox;
 
     public int MDTC = 0, ALAI = 0;
@@ -150,6 +153,7 @@ class PassOne {
     public MNT mnt = null;
     public MDT mdt = null;
     public ALA ala = null;
+    public int nestedMacro = 0;
 
     public IntermediateCode intermediateCode = null;
 
@@ -170,15 +174,17 @@ class PassOne {
 
     public void readFile() throws MinimumValueError {
         while (reader.hasNextLine()) {
-            parseLine(reader.nextLine().trim());
+            parseLine(reader.nextLine().trim(), true);
         }
 
+        reader.close();
+    }
+
+    public void setBoxes() throws MinimumValueError {
         setIntermediateCodeBox();
         setMNTBox();
         setMDTBox();
         setALABox();
-
-        reader.close();
     }
 
     public String getIntermediateCodeBox() {
@@ -186,7 +192,7 @@ class PassOne {
     }
 
     private void setIntermediateCodeBox() throws MinimumValueError {
-        intermediateCodeBox = new Box(new String[] { "Intermediate File" }, true);
+        intermediateCodeBox = new Box(new String[] { "Intermediate File" }, true, false);
 
         for (String code : intermediateCode.code) {
             intermediateCodeBox.addRow(new String[] { code });
@@ -249,26 +255,41 @@ class PassOne {
         }
     }
 
-    public void parseLine(String line) {
+    public void parseLine(String line, boolean store) {
         if (line.equals("MACRO") && !isMacro) {
             isMacro = true;
-        } else if (isMacro && !inMacro) {
+        } else if (isMacro && inMacro == 0) {
             ala.parseEntries(line);
             int index = ala.macroName.size() - 1;
 
             mnt.parseEntries(ala.macroName.get(index), ala.noOfParams.get(index), ALAI, MDTC);
             ALAI += ala.noOfParams.get(index) == 0 ? 1 : ala.noOfParams.get(index);
 
-            inMacro = true;
-        } else if (isMacro && inMacro) {
+            inMacro++;
+        } else if (isMacro && inMacro > 0) {
+            if (line.equals("MACRO")) {
+                inMacro++;
+
+                if (store)
+                    nestedMacro++;
+            }
+
             mdt.parseEntry(MDTC++, line);
 
             if (line.equals("MEND")) {
-                isMacro = inMacro = false;
+                inMacro--;
+
+                if (inMacro == 0)
+                    isMacro = false;
             }
         } else {
-            intermediateCode.parseEntry(line);
+            if (store)
+                intermediateCode.parseEntry(line);
         }
+    }
+
+    public IntermediateCode getNewIntermediateCode() {
+        return new IntermediateCode();
     }
 
     class IntermediateCode {
@@ -373,6 +394,7 @@ class PassOne {
 
 class PassTwo {
     private PassOne passOne = null;
+    private int isMacro = 0;
 
     public UpdatedALA updatedALA;
     public ExpandedCode expandedCode;
@@ -392,8 +414,36 @@ class PassTwo {
             parseLine(iterator.next());
         }
 
+        int limit = passOne.nestedMacro;
+
+        if (limit > 0) {
+            PassOne.IntermediateCode original = passOne.intermediateCode;
+
+            while (limit-- > 0) {
+                passOne.intermediateCode = passOne.new IntermediateCode();
+
+                for (String line : expandedCode.code) {
+                    passOne.parseLine(line, true);
+                }
+
+                expandedCode = new ExpandedCode();
+
+                for (String line : passOne.intermediateCode.code) {
+                    parseLine(line);
+                }
+            }
+            passOne.intermediateCode = original;
+
+            ExpandedCode copy = expandedCode;
+            expandedCode = new ExpandedCode();
+
+            for (String line : copy.code) {
+                parseLine(line);
+            }
+        }
+
         setUpdatedALABox();
-        setIntermediateCodeBox();
+        setExpandedCodeBox();
     }
 
     public void parseLine(String line) {
@@ -403,13 +453,28 @@ class PassTwo {
 
             for (int i = (int) mntEntry.MDTIndex; i < passOne.mdt.entries.size(); i++) {
                 PassOne.MDT.Entry mdtEntry = passOne.mdt.entries.get(i);
-                if (mdtEntry.macroStatement.equals("MEND"))
-                    break;
+
+                if (mdtEntry.macroStatement.equals("MACRO"))
+                    isMacro++;
+
+                if (mdtEntry.macroStatement.equals("MEND")) {
+                    if (isMacro > 0) {
+                        isMacro--;
+                    } else if (isMacro == 0)
+                        break;
+                }
 
                 String[] statement = mdtEntry.macroStatement.split("\\s+", 2);
 
                 if (statement.length > 1) {
                     String[] statementParams = statement[1].split(", *");
+
+                    if (!mntEntry.macroName.equals(statement[0]))
+                        for (UpdatedALA.Entry updatedALA : updatedALA.entries) {
+                            if (statement[0].equals(updatedALA.parameterName)) {
+                                statement[0] = updatedALA.parameterValue;
+                            }
+                        }
 
                     for (int j = 0; j < statementParams.length; j++) {
                         for (UpdatedALA.Entry updatedALA : updatedALA.entries) {
@@ -432,7 +497,7 @@ class PassTwo {
                     }
                     expandedCode.parseEntry(newLine);
                 } else {
-                    expandedCode.parseEntry(line);
+                    expandedCode.parseEntry(statement[0]);
                 }
             }
 
@@ -473,8 +538,8 @@ class PassTwo {
         return expandedCodeBox.getBox();
     }
 
-    private void setIntermediateCodeBox() throws MinimumValueError {
-        expandedCodeBox = new Box(new String[] { "Expanded Code" }, true);
+    private void setExpandedCodeBox() throws MinimumValueError {
+        expandedCodeBox = new Box(new String[] { "Expanded Code" }, true, false);
 
         for (String code : expandedCode.code) {
             expandedCodeBox.addRow(new String[] { code });
@@ -490,6 +555,10 @@ class PassTwo {
         }
         mntEntry = null;
         return false;
+    }
+
+    public PassOne getPassOne() {
+        return passOne;
     }
 
     class UpdatedALA {
@@ -541,7 +610,7 @@ class PassTwo {
 class Box {
     private String[] columnNames;
     private List<String[]> rows;
-    private boolean alignToRight;
+    private boolean alignToRight, trim;
 
     //A Table without column labels won't be presentable
     Box(String[] columnNames) {
@@ -549,7 +618,7 @@ class Box {
         rows = new ArrayList<String[]>();
 
         // Set the default alignment of the characters to the right
-        alignToRight = true;
+        alignToRight = trim = true;
     }
 
     Box(String[] columnNames, boolean alignToLeft) {
@@ -558,6 +627,16 @@ class Box {
 
         // Set the alignment of the characters to the left or right based on the input value
         alignToRight = !alignToLeft;
+        trim = true;
+    }
+
+    Box(String[] columnNames, boolean alignToLeft, boolean trim) {
+        this.columnNames = stringsArrayTrimmer(columnNames);
+        rows = new ArrayList<String[]>();
+
+        // Set the alignment of the characters to the left or right based on the input value
+        alignToRight = !alignToLeft;
+        this.trim = trim;
     }
 
     //Add a row to the table using string array
@@ -568,7 +647,10 @@ class Box {
             throw new MinimumValueError("The row must have atleast " + columnNames.length + " columns");
 
         // Add to the rows
-        rows.add(stringsArrayTrimmer(row));
+        if (trim)
+            rows.add(stringsArrayTrimmer(row));
+        else
+            rows.add(row);
         return this;
     }
 
@@ -586,7 +668,10 @@ class Box {
         }
 
         // Add to the rows
-        rows.add(stringsArrayTrimmer(sRow));
+        if (trim)
+            rows.add(stringsArrayTrimmer(sRow));
+        else
+            rows.add(sRow);
         return this;
     }
 
