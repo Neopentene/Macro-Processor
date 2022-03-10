@@ -2,11 +2,11 @@
 A short assembly macro-processor script to simulate the process and show the different stages
 
 ## 📝 Note 
-1. This script does not simulate nested macros... Will be done in a future update
+1. This script now supports nested Macro's
 2. In case you don't want to specify output file a new one will be made on your desktop
 3. In case your desktop is not found a new folder will be created in your user home directory and a output file will be made there
 
-## Java Version < 11 peeps 🧧
+## 🧧 Java Version < 11 peeps 🧧
 **Run this command first in the same directory where the downloaded file is being kept.**
 
 ```terminal
@@ -39,7 +39,7 @@ _In case where no parameters are provided the code will scan for a file named ``
 java MacroProcessor
 ```
 
-## Java Version > 11 peeps ✨
+## ✨ Java Version > 11 peeps ✨
 **Run the code directly using these commands**
 
 _Note in case of missing parameters, default ones will be selected._
